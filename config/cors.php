@@ -12,7 +12,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000', 'http://localhost:5173'],
+    'allowed_origins' => ['http://localhost:3000', 'http://localhost:5173', 'https://dls-rho.vercel.app', 'https://dls-git-main-bhawanas-projects-f594fb2a.vercel.app', 'https://dls-f860hxxcq-bhawanas-projects-f594fb2a.vercel.app'],
 
     'allowed_origins_patterns' => [],
 
