@@ -164,6 +164,43 @@ class DLSCalculatorService
         return $lambda;
     }
 
+    /**
+     * Calculate Par Score at a given moment
+     *
+     * @param float $oversRemaining
+     * @param int   $wicketsLost
+     * @param float $lambda
+     * @param float $adjFactor
+     * @param int   $target
+     *
+     * @return int
+     */
+    public function calculateParScore(
+        float $oversRemaining,
+        int $wicketsLost,
+        float $lambda,
+        float $adjFactor,
+        int $target
+    ): int {
+        if ($oversRemaining < 0) {
+            return $target;
+        }
+
+        // Raw remaining resource
+        $resRemaining = $this->resourceValue(
+            $oversRemaining,
+            $lambda,
+            min(max($wicketsLost, 0), 9)
+        );
+
+        // Java-style rounding AFTER multiplication
+        $resRuns = round($adjFactor * $resRemaining);
+
+        $par = $target - 1 - $resRuns;
+
+        return $par < 0 ? 0 : (int) $par;
+    }
+
     /* ============================
      * FINAL TARGET + PAR SCORE
      * ============================ */

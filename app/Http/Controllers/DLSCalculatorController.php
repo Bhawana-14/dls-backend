@@ -52,6 +52,12 @@ class DLSCalculatorController extends Controller
             }
         }
 
+        $oversBowled = (float) $team2Stops[0]['oversBowled'];
+        $wicketsLost = (int) $team2Stops[0]['wicketsLost'];
+        $oversRemaining = $team2OversStart - $oversBowled;
+
+
+
         $result = $dls->calculateTarget(
             $team1Overs,
             $team1Runs,
@@ -60,12 +66,19 @@ class DLSCalculatorController extends Controller
             $team2Stops,
             $penaltyRuns
         );
+        $par1 = $dls->calculateParScore(
+            $oversRemaining,
+            $wicketsLost,
+            lambda: round($result['lambda'], 4),
+            adjFactor: round($result['adjFactor'], 6),
+            target: $result['target']
+        );
 
         return response()->json([
             'success' => true,
             'data' => [
                 'over' => $team1Overs,
-                'par_score' => $result['par_score'],
+                'par_score' =>  $par1,
                 'target' => $result['target'],
                 'lambda' => round($result['lambda'], 4),
                 'adjustment_factor' => round($result['adjFactor'], 6),
